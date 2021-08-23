@@ -1,15 +1,14 @@
 import React from 'react';
 import './App.css';
 
-import {Chart} from './components/Chart'
+import { MemoizedChart } from './components/Chart';
 
 const App: React.FC = () => {
   return (
     <div>
-      <Chart/>
+      <MemoizedChart />
     </div>
-  
-  )
-}
+  );
+};
 
 export default App;
