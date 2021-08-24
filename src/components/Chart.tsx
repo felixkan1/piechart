@@ -44,20 +44,41 @@ const dataReducer = (state: chartData = initialState, action: any) => {
     case 'change slider':
       const { sliderIndex, value } = action;
       const newDatasets = [...state.data.datasets];
-      const dataArray = newDatasets[0].data;
-      dataArray[sliderIndex] = value;
+      let dataArray = newDatasets[0].data;
+
       //need to decrease the other slider values
       let total = dataArray.reduce((a, c) => a + c, 0);
-      let difference = total - 100;
+      let remaining = 100 - value;
       //3) subtract evenly from sliders that are not 0
       //case difference > 100
 
       //need to decrease the other sliders
-      if (total !== 100) {
-        adjustSliders(difference, dataArray, sliderIndex);
-        total = dataArray.reduce((a, c) => a + c, 0);
+
+      const nonZeroSliders = dataArray
+        .filter((n, index) => index !== sliderIndex)
+        .filter((n, index) => n !== 0).length;
+
+      const increaseOtherSliders =
+        dataArray[sliderIndex] > value ? true : false;
+
+      for (let i = 0; i < dataArray.length; i++) {
+        if (i === sliderIndex) {
+          dataArray[i] = value;
+        } else if (dataArray[i] !== 0) {
+          const newVal = remaining / nonZeroSliders;
+          dataArray[i] = newVal;
+        } else if (increaseOtherSliders) {
+          const newVal = remaining / nonZeroSliders;
+          dataArray[i] = newVal;
+        }
       }
 
+      console.log(dataArray);
+
+      // if (total !== 100) {
+      //   adjustSliders(difference, dataArray, sliderIndex);
+      //   total = dataArray.reduce((a, c) => a + c, 0);
+      // }
 
       return {
         ...state,

@@ -3,7 +3,7 @@ import './Sliders.css';
 import { chartData } from '../interface/interfaces';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
-import { makeStyles } from '@material-ui/core/styles';
+
 
 interface Props {
   chartData: chartData['data'];
