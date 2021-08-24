@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Sliders.css';
 import { chartData } from '../interface/interfaces';
 import Typography from '@material-ui/core/Typography';
@@ -11,7 +11,11 @@ interface Props {
 }
 
 export const Sliders: React.FC<Props> = ({ chartData, dispatch }) => {
-  const [value, setValue] = React.useState<number | number[]>(1);
+  const [total, setTotal] = React.useState<number | number[]>(0);
+
+  useEffect(() => {
+    setTotal(chartData.datasets[0].data.reduce((a, b) => a + b, 0));
+  }, [chartData]);
 
   const handleChange = (event: any, newValue: number | number[]) => {
     const slider = event.target.ariaLabel;
@@ -20,7 +24,7 @@ export const Sliders: React.FC<Props> = ({ chartData, dispatch }) => {
     } else {
       dispatch({
         type: 'change slider',
-        slider: parseInt(slider),
+        sliderIndex: parseInt(slider),
         value: newValue,
       });
     }
@@ -28,6 +32,7 @@ export const Sliders: React.FC<Props> = ({ chartData, dispatch }) => {
 
   return (
     <div className="sliders">
+      <div className="total">{total}</div>
       {chartData.labels.map((label, index) => (
         <div className="slider">
           <Typography id="range-slider" gutterBottom>
