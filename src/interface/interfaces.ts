@@ -8,4 +8,5 @@ export interface chartData {
       hoverOffset: number;
     }[];
   };
+  locked: number[];
 }

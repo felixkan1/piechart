@@ -37,26 +37,22 @@ const adjustSliders = (
 const dataReducer = (state: chartData = initialState, action: any) => {
   switch (action.type) {
     case 'get initial data': {
+      const { label, colour } = action;
+      console.log(label, colour);
       return {
         ...state,
       };
     }
-    case 'change slider':
+    case 'change slider': {
       const { sliderIndex, value } = action;
       const newDatasets = [...state.data.datasets];
       let dataArray = newDatasets[0].data;
 
-      //need to decrease the other slider values
-      let total = dataArray.reduce((a, c) => a + c, 0);
       let remaining = 100 - value;
-      //3) subtract evenly from sliders that are not 0
-      //case difference > 100
-
-      //need to decrease the other sliders
 
       const nonZeroSliders = dataArray
-        .filter((n, index) => index !== sliderIndex)
-        .filter((n, index) => n !== 0).length;
+        .filter((val, index) => index !== sliderIndex)
+        .filter((val, index) => val !== 0).length;
 
       const increaseOtherSliders =
         dataArray[sliderIndex] > value ? true : false;
@@ -64,21 +60,10 @@ const dataReducer = (state: chartData = initialState, action: any) => {
       for (let i = 0; i < dataArray.length; i++) {
         if (i === sliderIndex) {
           dataArray[i] = value;
-        } else if (dataArray[i] !== 0) {
-          const newVal = remaining / nonZeroSliders;
-          dataArray[i] = newVal;
-        } else if (increaseOtherSliders) {
-          const newVal = remaining / nonZeroSliders;
-          dataArray[i] = newVal;
+        } else if (dataArray[i] !== 0 || increaseOtherSliders) {
+          dataArray[i] = remaining / nonZeroSliders;
         }
       }
-
-      console.log(dataArray);
-
-      // if (total !== 100) {
-      //   adjustSliders(difference, dataArray, sliderIndex);
-      //   total = dataArray.reduce((a, c) => a + c, 0);
-      // }
 
       return {
         ...state,
@@ -87,6 +72,29 @@ const dataReducer = (state: chartData = initialState, action: any) => {
           datasets: newDatasets,
         },
       };
+    }
+    case 'add slider': {
+      const { colour, label } = action;
+      const newDatasets = [...state.data.datasets];
+
+      const dataArray = newDatasets[0].data;
+      const colourArray = newDatasets[0].backgroundColor;
+
+      dataArray.push(0);
+      colourArray.push(colour);
+
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          labels: [...state.data.labels, label],
+          datasets: newDatasets,
+        },
+      };
+    }
+    case 'lock slider': {
+      const { index } = action;
+    }
   }
 };
 

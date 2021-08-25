@@ -15,5 +15,6 @@ export const getInitialChartData = () => {
         },
       ],
     },
+    locked: [],
   };
 };

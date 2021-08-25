@@ -1,6 +1,6 @@
 .chart {
-  max-width: 40%;
-  max-height: 100%;
+  max-width: 30%;
+  height: 100%;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -9,4 +9,8 @@
   margin: 100px auto;
   display: flex;
   flex-direction: row;
+}
+
+.chart canvas {
+  margin-right: 3rem;
 }
