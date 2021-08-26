@@ -1,5 +1,17 @@
+.sliders {
+  width: 15rem;
+}
+
 .slider {
-  width: 10rem;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider input {
+  margin-left: 20px;
 }
 
 .label-button {

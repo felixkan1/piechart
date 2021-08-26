@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import './Sliders.css';
 import { chartData } from '../interface/interfaces';
 import Typography from '@material-ui/core/Typography';
@@ -7,12 +8,18 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TextField from '@material-ui/core/TextField';
 import { CirclePicker } from 'react-color';
+
 interface Props {
   chartData: chartData['data'];
   dispatch: any;
+  lockedSliders: number[];
 }
 
-export const Sliders: React.FC<Props> = ({ chartData, dispatch }) => {
+export const Sliders: React.FC<Props> = ({
+  chartData,
+  dispatch,
+  lockedSliders,
+}) => {
   const [total, setTotal] = useState<number>(0);
   const [newLabelValue, setNewLabelValue] = useState<string>('');
   const [newColour, setNewColour] = useState<string>('');
@@ -43,6 +50,13 @@ export const Sliders: React.FC<Props> = ({ chartData, dispatch }) => {
     }
   };
 
+  const handleLock = (index: number) => {
+    dispatch({
+      type: 'toggle lock slider',
+      index: index,
+    });
+  };
+
   const handleAddLabel = (event: any) => {
     dispatch({
       type: 'add slider',
@@ -57,21 +71,28 @@ export const Sliders: React.FC<Props> = ({ chartData, dispatch }) => {
     <div className="sliders">
       <div className="total">Total: {Math.round(total)}</div>
       {chartData.labels.map((label, index) => (
-        <div className="slider">
+        <div className="sliders">
           <Typography id="range-slider" gutterBottom>
             {label}
           </Typography>
-          <Slider
-            value={chartData.datasets[0].data[index]}
-            min={0}
-            step={1}
-            max={100}
-            onChange={handleSliderChange}
-            valueLabelDisplay="auto"
-            valueLabelFormat={(x) => x.toFixed(1)}
-            aria-labelledby="non-linear-slider"
-            aria-label={String(index)}
-          />
+          <div className="slider">
+            <Slider
+              value={chartData.datasets[0].data[index]}
+              min={0}
+              step={1}
+              max={70}
+              onChange={handleSliderChange}
+              valueLabelDisplay="auto"
+              valueLabelFormat={(x) => x.toFixed(1)}
+              aria-labelledby="non-linear-slider"
+              aria-label={String(index)}
+              disabled={
+                lockedSliders.includes(index) ||
+                chartData.labels.length - lockedSliders.length === 1
+              }
+            />
+            <input type="checkbox" onClick={() => handleLock(index)} />
+          </div>
         </div>
       ))}
       <div className="add-label">
