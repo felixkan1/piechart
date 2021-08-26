@@ -79,8 +79,8 @@ export const Sliders: React.FC<Props> = ({
             <Slider
               value={chartData.datasets[0].data[index]}
               min={0}
-              step={1}
-              max={70}
+              step={0.01}
+              max={100}
               onChange={handleSliderChange}
               valueLabelDisplay="auto"
               valueLabelFormat={(x) => x.toFixed(1)}

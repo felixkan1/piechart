@@ -22,17 +22,49 @@ const dataReducer = (state: chartData = initialState, action: any) => {
 
       let remaining = 100 - value;
 
-      dataArray.map((val, index) => {
+      //determine remaining
+      dataArray.forEach((val, index) => {
         if (state.locked.includes(index)) {
           remaining -= val;
         }
       });
+
+      //edge case where remaining sliders approaches 0 so the slider increasing needs to stop before total sum goes over 100
+      if (remaining <= 0) {
+        console.log(remaining);
+
+        let sum = 0;
+
+        for (let i = 0; i < dataArray.length; i++) {
+          if (
+            i !== sliderIndex &&
+            dataArray[i] !== 0 &&
+            !state.locked.includes(i)
+          ) {
+            sum += dataArray[i];
+            dataArray[i] = 0;
+          }
+        }
+
+        dataArray[sliderIndex] += sum;
+
+        return {
+          ...state,
+          data: {
+            ...state.data,
+            datasets: newDatasets,
+          },
+        };
+      }
+
+      //general case:
 
       const remainingSliders = dataArray.filter(
         (val, index) =>
           index !== sliderIndex && val !== 0 && !state.locked.includes(index)
       ).length;
 
+      //allows for increase or decrease of other sliders
       const increaseOtherSliders =
         dataArray[sliderIndex] > value ? true : false;
 
