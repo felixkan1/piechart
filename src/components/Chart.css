@@ -1,16 +1,37 @@
 .chart {
   max-width: 30%;
-  height: 100%;
+  height: 70%;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  margin: 100px auto;
+  margin: auto auto;
   display: flex;
   flex-direction: row;
 }
 
 .chart canvas {
   margin-right: 3rem;
+}
+
+@media only screen and (max-width: 800px) {
+  .chart {
+    max-width: 70%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+  }
+
+  .chart canvas {
+    margin-bottom: 1rem;
+  }
+
 }

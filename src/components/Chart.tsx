@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Sliders } from './Sliders';
 import { getInitialChartData } from '../chartConfigs/chartInitialData';
@@ -110,7 +110,7 @@ const dataReducer = (state: chartData = initialState, action: any) => {
       const { index } = action;
       let lockedList = [...state.locked];
       if (lockedList.includes(index)) {
-        lockedList = lockedList.filter((sliderIndex) => sliderIndex != index);
+        lockedList = lockedList.filter((sliderIndex) => sliderIndex !== index);
       } else {
         lockedList.push(index);
       }
