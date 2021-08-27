@@ -62,8 +62,6 @@ const dataReducer = (state: chartData = initialState, action: any) => {
 
       //edge case where all remaining sliders are 0
       if (!remainingSliders) {
-        let sum = 0;
-
         for (let i = 0; i < dataArray.length; i++) {
           if (i !== sliderIndex && !state.locked.includes(i)) {
             dataArray[i] = 0.1;
